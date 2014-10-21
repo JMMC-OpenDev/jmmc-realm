@@ -53,7 +53,8 @@ import org.w3c.dom.Node;
  * To use it:
  * <ul>
  *   <li>
- *     place the JAR file in the lib/core directory of eXist-db
+ *     place the JAR file in the '<b>lib/extension</b>' directory of eXist-db as 
+ *     '<b>exist-security-jmmc.jar</b>'
  *   </li>
  *   <li>
  *     edit the configuration fo the Security Manager (/db/system/security/config.xml)
