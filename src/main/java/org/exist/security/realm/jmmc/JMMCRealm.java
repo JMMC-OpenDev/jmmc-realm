@@ -42,13 +42,22 @@ import org.w3c.dom.Node;
 /**
  * An eXist-db realm for authentication with the JMMC user database.
  *
+ * It creates a new eXist-db account with the registration information from
+ * the JMMC service. Accounts are created on-demand. The user password is
+ * never stored in eXist-db, user identification is still performed by the
+ * underlying JMMC user database.
+ *
+ * All authenticated users are added to a 'users' group. Users with specific
+ * credentials are also added to groups named after the credential.
+ *
  * To use it:
  * <ul>
  *   <li>
  *     place the JAR file in the lib/core directory of eXist-db
  *   </li>
  *   <li>
- *     edit the configuration fo the Security Manager (/db/ and add:
+ *     edit the configuration fo the Security Manager (/db/system/security/config.xml)
+ *     and add:
  *     <pre>
  *     {@code
  *     <realm id="JMMC">
