@@ -47,7 +47,7 @@ import org.w3c.dom.Node;
  * never stored in eXist-db, user identification is still performed by the
  * underlying JMMC user database.
  *
- * All authenticated users are added to a 'users' group. Users with specific
+ * All authenticated users are added to a 'jmmc' group. Users with specific
  * credentials are also added to groups named after the credential.
  *
  * To use it:
@@ -303,6 +303,8 @@ public class JMMCRealm extends AbstractRealm {
             @Override
             public Account execute(DBBroker broker) throws EXistException, PermissionDeniedException {
                 final UserAider userAider = new UserAider(ID, user.email, getSecurityManager().getGroup("guest"));
+                // all user are added to the jmmc group
+                userAider.addGroup(getSecurityManager().getGroup("jmmc"));
 
                 for (String credential : user.credentials) {
                     userAider.addGroup(getSecurityManager().getGroup(credential));
