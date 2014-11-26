@@ -9,7 +9,7 @@
         <version>TRUNK</version>
         <!--  please install first parent pom from jMCS/parent-pom directory -->
     </parent>
-    
+
     <groupId>fr.jmmc.exist</groupId>
     <artifactId>jmmc-realm</artifactId>
 
@@ -26,6 +26,22 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <BuildTime>${maven.build.timestamp}</BuildTime>
+                        </manifestEntries>
+                    </archive>
+                    <finalName>exist-security-jmmc</finalName>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <properties>
@@ -38,13 +54,13 @@
         <!-- eXistDB Library -->
 
         <dependency>
-          <groupId>org.exist-db</groupId>
-          <artifactId>exist-exist</artifactId>
-          <version>2.1</version>
+            <groupId>org.exist-db</groupId>
+            <artifactId>exist-exist</artifactId>
+            <version>2.2</version>
         </dependency>
 
         <!--  log4j -->
-        
+
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>

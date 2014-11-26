@@ -38,7 +38,6 @@ import org.exist.security.internal.aider.UserAider;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-
 /**
  * An eXist-db realm for authentication with the JMMC user database.
  *
@@ -73,30 +72,32 @@ import org.w3c.dom.Node;
  */
 @ConfigurationClass("realm")
 public class JMMCRealm extends AbstractRealm {
-
+    
     private final static Logger LOG = Logger.getLogger(JMMCRealm.class);
-
+    
     @ConfigurationFieldAsAttribute("id")
     public static String ID = "JMMC";
-
+    
     @ConfigurationFieldAsElement("url")
     protected String url = null;
-
+    
     public JMMCRealm(SecurityManagerImpl sm, Configuration config) {
         super(sm, config);
-
+        
         configuration = Configurator.configure(this, config);
+        
+        LOG.info("JMMCRealm created with url = '" + url + "'");
     }
-
+    
     @Override
     public String getId() {
         return ID;
     }
-
+    
     @Override
     public Subject authenticate(String accountName, Object credentials) throws AuthenticationException {
         final boolean checked;
-
+        
         try {
             checked = checkPassword(accountName, (String) credentials);
         } catch (Exception ex) {
@@ -104,11 +105,11 @@ public class JMMCRealm extends AbstractRealm {
             LOG.error(new AuthenticationException(AuthenticationException.UNNOWN_EXCEPTION, ex.getMessage()));
             return null;
         }
-
+        
         if (!checked) {
             throw new AuthenticationException(AuthenticationException.WRONG_PASSWORD, "Bad password for user '" + accountName + "'");
         }
-
+        
         final AbstractAccount account = (AbstractAccount) getAccount(accountName);
         if (account != null) {
             return new SubjectAccreditedImpl(account, true);
@@ -132,9 +133,9 @@ public class JMMCRealm extends AbstractRealm {
         params.put("action", "checkPassword");
         params.put("email", user);
         params.put("password", password);
-
+        
         InputStream is = httpPost(params);
-
+        
         Document doc = parseXML(is);
         return doc.getElementsByTagName("true").item(0) != null;
     }
@@ -143,14 +144,15 @@ public class JMMCRealm extends AbstractRealm {
      * An anonymous class to store the JMMC user details from an XML response of the service
      */
     class User {
+
         String email;
-
+        
         String fullName;
-
+        
         String affiliation;
-
+        
         final List<String> credentials = new ArrayList<>();
-
+        
         public User(String email, Node data) {
             this.email = email;
 
@@ -159,7 +161,7 @@ public class JMMCRealm extends AbstractRealm {
                 if (child.getNodeType() != Node.ELEMENT_NODE) {
                     continue;
                 }
-
+                
                 switch (child.getNodeName()) {
                     case "name":
                         this.fullName = child.getTextContent();
@@ -173,7 +175,7 @@ public class JMMCRealm extends AbstractRealm {
                     default:
                 }
             }
-
+            
         }
     }
 
@@ -190,9 +192,9 @@ public class JMMCRealm extends AbstractRealm {
         Map<String, String> params = new HashMap<>();
         params.put("action", "getInfo");
         params.put("email", user);
-
+        
         InputStream is = httpPost(params);
-
+        
         Document doc = parseXML(is);
         Node response = doc.getElementsByTagName("response").item(0);
         if (response == null) {
@@ -217,25 +219,25 @@ public class JMMCRealm extends AbstractRealm {
      */
     private InputStream httpPost(Map<String, String> params) throws Exception {
         HttpsURLConnection connection = (HttpsURLConnection) new URL(this.url).openConnection();
-
+        
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         connection.setUseCaches(false);
         connection.setDoInput(true);
         connection.setDoOutput(true);
-
+        
         String urlParameters = "";
         for (Map.Entry<String, String> entry : params.entrySet()) {
             urlParameters += entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), "UTF-8") + "&";
         }
-
+        
         connection.setRequestProperty("Content-Length", "" + Integer.toString(urlParameters.getBytes().length));
-
+        
         try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
             wr.writeBytes(urlParameters);
             wr.flush();
         }
-
+        
         return connection.getInputStream();
     }
 
@@ -251,10 +253,10 @@ public class JMMCRealm extends AbstractRealm {
     private static Document parseXML(InputStream stream) throws Exception {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-
+        
         return documentBuilder.parse(stream);
     }
-
+    
     @Override
     public final synchronized Account getAccount(final String name) {
         // try to get the cached account first
@@ -271,18 +273,18 @@ public class JMMCRealm extends AbstractRealm {
             }
         }
     }
-
+    
     @Override
     public final Group getGroup(String name) {
         Group group = super.getGroup(name);
         if (group != null) {
             return group;
         }
-        
+
         // unknown group, create a new one
         try {
             return createGroup(name);
-        } catch(AuthenticationException ex) {
+        } catch (AuthenticationException ex) {
             LOG.error(ex.getMessage(), ex);
             return null;
         }
@@ -305,20 +307,20 @@ public class JMMCRealm extends AbstractRealm {
                 final UserAider userAider = new UserAider(ID, user.email, getSecurityManager().getGroup("guest"));
                 // all user are added to the jmmc group
                 userAider.addGroup(getSecurityManager().getGroup("jmmc"));
-
+                
                 for (String credential : user.credentials) {
                     userAider.addGroup(getSecurityManager().getGroup(credential));
                 }
-
+                
                 if (user.fullName != null) {
                     userAider.setMetadataValue(AXSchemaType.FULLNAME, user.fullName);
                 }
-
+                
                 if (user.affiliation != null) {
                     // not queryable from the security manager as regular metadata item
                     userAider.setMetadataValue(JMMCSchemaType.AFFILIATION, user.affiliation);
                 }
-
+                
                 final Account account = getSecurityManager().addAccount(userAider);
                 
                 return account;
@@ -343,12 +345,12 @@ public class JMMCRealm extends AbstractRealm {
             throw new AuthenticationException(AuthenticationException.UNNOWN_EXCEPTION, e.getMessage(), e);
         }
     }
-
+    
     @Override
     public boolean deleteAccount(Account account) throws PermissionDeniedException, EXistException, ConfigurationException {
         return false;
     }
-
+    
     @Override
     public boolean deleteGroup(Group group) throws PermissionDeniedException, EXistException, ConfigurationException {
         return false;
