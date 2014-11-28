@@ -14,35 +14,20 @@
 
     <packaging>jar</packaging>
     <name>JMMC Realm for eXist-db</name>
+
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.4</version>
                 <configuration>
-                    <archive>
-                        <manifest>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                        </manifest>
-                        <manifestEntries>
-                            <BuildTime>${maven.build.timestamp}</BuildTime>
-                        </manifestEntries>
-                    </archive>
                     <finalName>exist-security-jmmc</finalName>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
     <properties>
         <!-- do copy dependencies -->
         <mdep.skip>false</mdep.skip>
