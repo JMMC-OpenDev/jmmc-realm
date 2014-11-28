@@ -5,9 +5,8 @@
 
     <parent>
         <groupId>fr.jmmc</groupId>
-        <artifactId>jmmc</artifactId>
+        <artifactId>exist</artifactId>
         <version>TRUNK</version>
-        <!--  please install first parent pom from jMCS/parent-pom directory -->
     </parent>
 
     <groupId>fr.jmmc.exist</groupId>
