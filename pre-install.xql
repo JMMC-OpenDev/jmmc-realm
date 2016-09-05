@@ -34,7 +34,7 @@ let $jmmc-realm := <realm id="JMMC" xmlns="http://exist-db.org/Configuration"> <
     
 let $jar-name:="exist-security-jmmc.jar"
 let $jar-present:= file:exists(concat(system:get-exist-home(),"/lib/extensions/",$jar-name))
-let $security-config-set := exists($security-config//realm[@id="JMMC"])
+let $security-config-set := exists($security-config//*:realm[@id="JMMC"])
 
 return if ($security-config-set and $jar-present) then
         "All is fine : security config is set and jar is present."
