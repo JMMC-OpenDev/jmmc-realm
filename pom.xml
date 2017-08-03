@@ -60,11 +60,11 @@
 
     <dependencies>
 
-        <!-- eXistDB Library -->
+        <!-- eXistDB Library : please also check the version of existdb insite ansible script for oidb deployements -->
         <dependency>
             <groupId>org.exist-db</groupId>
             <artifactId>exist-core</artifactId>
-            <version>3.3.0</version>
+            <version>3.4.0</version>
             <scope>provided</scope>
         </dependency>
 
