@@ -18,6 +18,5 @@ declare variable $app:jmmc-realm := <realm id="JMMC" xmlns="http://exist-db.org/
  : @param $model a map containing arbitrary data - used to pass information between template calls
  :)
 declare function app:status($node as node(), $model as map(*)) {
-  " Everything seems fine"
-  (: More tests here :)
+  doc("/db/system/config/db/apps/jmmc-realm/install.xml")/status
 };

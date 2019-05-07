@@ -54,6 +54,6 @@ return if ($security-config-set and $jar-present) then
 (: store the collection configuration :)
 local:mkcol("/db/system/config", $target),
 xdb:store-files-from-pattern(concat("/system/config", $target), $dir, "*.xconf"),
-local:fix-security()
+xdb:store( concat("/system/config", $target), "install.xml", <status>{local:fix-security()}</status> )
 
 
