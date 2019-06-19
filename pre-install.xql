@@ -42,7 +42,7 @@ return if ($security-config-set and $jar-present) then
         (
          "Jar present.",
          update insert $jmmc-realm into $security-config/* ,
-         "JMMC realm just appent to security manager, please reboot existdb"
+         "JMMC realm just appent to security manager, please restart existdb if you are running a fresh install."
         )
     else if($security-config-set) then
         "Oups: security config set but jar is not present"
