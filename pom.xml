@@ -64,16 +64,8 @@
         <dependency>
             <groupId>org.exist-db</groupId>
             <artifactId>exist-core</artifactId>
-            <version>3.4.0</version>
+            <version>5.0.0</version>
             <scope>provided</scope>
-        </dependency>
-
-        <!--  log4j -->
-
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
         </dependency>
 
     </dependencies>

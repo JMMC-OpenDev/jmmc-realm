@@ -16,7 +16,8 @@ import javax.naming.NamingException;
 import javax.net.ssl.HttpsURLConnection;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.exist.EXistException;
 import org.exist.config.Configuration;
 import org.exist.config.ConfigurationException;
@@ -75,7 +76,7 @@ import org.w3c.dom.Node;
 @ConfigurationClass("realm")
 public class JMMCRealm extends AbstractRealm {
 
-    private final static Logger logger = Logger.getLogger(JMMCRealm.class);
+    private final static Logger logger = LogManager.getLogger(JMMCRealm.class);
 
     @ConfigurationFieldAsAttribute("id")
     public static String ID = "JMMC";
@@ -235,7 +236,7 @@ public class JMMCRealm extends AbstractRealm {
 
         connection.setRequestProperty("Content-Length", "" + Integer.toString(urlParameters.getBytes().length));
 
-        try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
+        try ( DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
             wr.writeBytes(urlParameters);
             wr.flush();
         }
