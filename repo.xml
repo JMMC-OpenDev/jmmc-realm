@@ -10,5 +10,17 @@
     <target>jmmc-realm</target>
     <prepare>pre-install.xql</prepare>
     <finish/>
-    <deployed>2016-09-01T09:58:03.583+02:00</deployed>
+    <changelog>
+       <change version="0.2">
+        <ul xmlns=""> 
+          <li>compiled for existdb 5</li>
+        </ul>
+      </change>
+      <change version="0.1">
+        <ul xmlns=""> 
+          <li>first version</li>
+        </ul>
+      </change>
+    </changelog>
+
 </meta>
