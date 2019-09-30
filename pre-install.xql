@@ -31,9 +31,12 @@ declare function local:mkcol($collection, $path) {
 declare function local:fix-security() {
 let $security-config := doc("/db/system/security/config.xml")
 let $jmmc-realm := <realm id="JMMC" xmlns="http://exist-db.org/Configuration"> <url>https://apps.jmmc.fr/account/manage.php</url> </realm>
-    
+
+(: Search for jar in EXIST_HOME/lib or lib/extensions :)    
 let $jar-name:="exist-security-jmmc.jar"
 let $jar-present:= file:exists(concat(system:get-exist-home(),"/lib/extensions/",$jar-name))
+
+let $jar-present:= if($jar-present) then true() else file:exists(concat(system:get-exist-home(),"/lib/",$jar-name))
 let $security-config-set := exists($security-config//*:realm[@id="JMMC"])
 
 return if ($security-config-set and $jar-present) then
@@ -42,18 +45,19 @@ return if ($security-config-set and $jar-present) then
         (
          "Jar present.",
          update insert $jmmc-realm into $security-config/* ,
-         "JMMC realm just appent to security manager, please restart existdb if you are running a fresh install."
+         "JMMC realm just appent to security manager "
         )
     else if($security-config-set) then
-        "Oups: security config set but jar is not present"
+        "Oups: security config set but jar is not present - may be enough..."
     else 
-        "coucou"
+        "Nothing went fine :( Please debug."
 };
 
 
 (: store the collection configuration :)
 local:mkcol("/db/system/config", $target),
 xdb:store-files-from-pattern(concat("/system/config", $target), $dir, "*.xconf"),
-xdb:store( concat("/system/config", $target), "install.xml", <status>{local:fix-security()}</status> )
+xdb:store( concat("/system/config", $target), "install.xml", <status>{local:fix-security()}</status> ),
+util:log("info", local:fix-security())
 
 
