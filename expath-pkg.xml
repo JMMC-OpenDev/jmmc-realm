@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <package xmlns="http://expath.org/ns/pkg" name="http://exist.jmmc.fr/jmmc-realm" abbrev="jmmc-realm" version="0.2" spec="1.0">
     <title>JMMC Realm module</title>
+    <dependency processor="http://exist-db.org" semver-min="5.0.0"/>
     <dependency package="http://exist-db.org/apps/shared"/>
 </package>
