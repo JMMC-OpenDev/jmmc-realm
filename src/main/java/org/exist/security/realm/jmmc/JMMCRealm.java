@@ -64,7 +64,7 @@ import org.w3c.dom.Node;
  *     <pre>
  *     {@code
  *     <realm id="JMMC">
- *       <url>https://jmmc.obs.ujf-grenoble.fr/account/manage.php</url>
+ *       <url>https://apps.jmmc.fr/account/manage.php</url>
  *     </realm>
  *     }
  *     </pre>
