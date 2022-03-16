@@ -2,7 +2,8 @@ xquery version "3.0";
 
 module namespace app="http://exist.jmmc.fr/jmmc-realm/templates";
 
-import module namespace templates="http://exist-db.org/xquery/templates" ;
+import module namespace templates="http://exist-db.org/xquery/html-templating";
+import module namespace lib="http://exist-db.org/xquery/html-templating/lib";
 import module namespace config="http://exist.jmmc.fr/jmmc-realm/config" at "config.xqm";
 
 declare variable $app:security-config := doc("/db/system/security/config.xml");
