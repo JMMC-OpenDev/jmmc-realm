@@ -10,7 +10,7 @@
         <relativePath />
     </parent>
 
-    <groupId>fr.jmmc.exist</groupId>
+    <groupId>fr.jmmc</groupId>
     <artifactId>jmmc-realm</artifactId>
 
     <packaging>jar</packaging>
